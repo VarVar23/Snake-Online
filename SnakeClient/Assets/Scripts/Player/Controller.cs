@@ -39,6 +39,13 @@ public class Controller : MonoBehaviour
             _playerAim.SetTargetDirection(_cursor.position);
         }
 
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            int random = Random.Range(0, _snake.Skins.GetCountMaterials());
+            _snake.Skins.SetSkin(random);
+            _snake.Skins.Send(random);
+        }
+
         SendMove();
     }
 

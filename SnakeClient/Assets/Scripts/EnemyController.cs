@@ -14,6 +14,12 @@ public class EnemyController : MonoBehaviour
         player.OnDChange(OnDChange); //
         player.OnXChange(OnXChange); //
         player.OnZChange(OnZChange); //
+        player.OnColorIDChange(OnColorIdChange);
+    }
+
+    private void OnColorIdChange(int currentValue, int previousValue)
+    {
+        _snake.ChangeSkins(currentValue);
     }
 
     private void OnChange()//

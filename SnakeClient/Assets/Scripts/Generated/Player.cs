@@ -18,6 +18,9 @@ public partial class Player : Schema {
 	[Type(2, "uint8")]
 	public byte d = default(byte);
 
+	[Type(3, "int32")]
+	public int colorID = default(int);
+
 	/*
 	 * Support for individual property change callbacks below...
 	 */
@@ -58,11 +61,24 @@ public partial class Player : Schema {
 		};
 	}
 
+	protected event PropertyChangeHandler<int> __colorIDChange;
+	public Action OnColorIDChange(PropertyChangeHandler<int> __handler, bool __immediate = true) {
+		if (__callbacks == null) { __callbacks = new SchemaCallbacks(); }
+		__callbacks.AddPropertyCallback(nameof(this.colorID));
+		__colorIDChange += __handler;
+		if (__immediate && this.colorID != default(int)) { __handler(this.colorID, default(int)); }
+		return () => {
+			__callbacks.RemovePropertyCallback(nameof(colorID));
+			__colorIDChange -= __handler;
+		};
+	}
+
 	protected override void TriggerFieldChange(DataChange change) {
 		switch (change.Field) {
 			case nameof(x): __xChange?.Invoke((float) change.Value, (float) change.PreviousValue); break;
 			case nameof(z): __zChange?.Invoke((float) change.Value, (float) change.PreviousValue); break;
 			case nameof(d): __dChange?.Invoke((byte) change.Value, (byte) change.PreviousValue); break;
+			case nameof(colorID): __colorIDChange?.Invoke((int) change.Value, (int) change.PreviousValue); break;
 			default: break;
 		}
 	}
